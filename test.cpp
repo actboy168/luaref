@@ -59,6 +59,17 @@ static int ref_get(lua_State *L) {
     return 1;
 }
 
+static int ref_set(lua_State *L) {
+    luaref ref = getLr(L);
+    int r      = (int)luaL_checkinteger(L, 2);
+    lua_settop(L, 3);
+    if (!luaref_isvalid(ref, r)) {
+        return luaL_error(L, "invalid ref: %d", r);
+    }
+    luaref_set(ref, L, r);
+    return 1;
+}
+
 #if defined(_WIN32)
 #    define DLLEXPORT __declspec(dllexport)
 #else
@@ -73,6 +84,7 @@ extern "C" DLLEXPORT int luaopen_testlib_luaref(lua_State *L) {
         { "ref", ref_ref },
         { "unref", ref_unref },
         { "get", ref_get },
+        { "set", ref_set },
         { NULL, NULL },
     };
     luaL_newlib(L, l);

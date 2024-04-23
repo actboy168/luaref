@@ -34,6 +34,21 @@ function m.test_get()
     luaref.close(ref)
 end
 
+function m.test_set()
+    local ref = luaref.init()
+    local r = {}
+    for i = 1, 10 do
+        r[i] = luaref.ref(ref, i)
+    end
+    for i = 1, 10 do
+        luaref.set(ref, r[i], i * 2)
+    end
+    for i = 1, 10 do
+        lt.assertEquals(i * 2, luaref.get(ref, r[i]))
+    end
+    luaref.close(ref)
+end
+
 function m.test_unref()
     local ref = luaref.init()
     local r = luaref.ref(ref, "hello")
