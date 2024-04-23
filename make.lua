@@ -1,5 +1,7 @@
 local lm = require "luamake"
 
+lm.mode = "debug"
+
 lm:lua_dll "testlib" {
     sources = {
         "luaref.cpp",
