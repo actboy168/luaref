@@ -32,6 +32,12 @@ static int ref_ref(lua_State *L) {
     luaref ref = getLr(L);
     lua_settop(L, 2);
     int r = luaref_ref(ref, L);
+    if (r == LUA_NOREF) {
+        return luaL_error(L, "Too many refs.");
+    }
+    if (r <= 1) {
+        return luaL_error(L, "Unexpected error.");
+    }
     lua_pushinteger(L, r);
     return 1;
 }
